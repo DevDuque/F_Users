@@ -5,10 +5,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '../controller/UserProvider.dart';
+import '../model/UserModel.dart';
 
 import './LoginScreen.dart';
+
 import '../theme/colors.dart';
-import '../model/UserModel.dart';
 
 class SignScreen extends StatelessWidget {
   const SignScreen({super.key});

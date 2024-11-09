@@ -1,11 +1,13 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'dart:math'; // Para gerar frases aleatórias
 
-import '../controller/UserProvider.dart';
 import '../model/UserModel.dart';
+import '../controller/UserProvider.dart';
 
 import './EditUserScreen.dart';
+
+import '../theme/colors.dart';
 
 class HomeScreen extends StatelessWidget {
   final UserModel user;
@@ -33,7 +35,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Usuários Registrados'),
-        backgroundColor: Colors.blue,
+        backgroundColor: AppColors.backgroundColor,
       ),
       body: ListView.builder(
         itemCount: userProvider.users.length,
@@ -41,30 +43,6 @@ class HomeScreen extends StatelessWidget {
           final currentUser = userProvider.users[index];
 
           // Coloca o usuário logado no topo da lista
-          if (currentUser.id == user.id) {
-            return ListTile(
-              title: Text(currentUser.nome),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Telefone: ${currentUser.telefone}'),
-                  Text('Email: ${currentUser.email}'),
-                  Text('Frase: ${getRandomPhrase()}'),
-                ],
-              ),
-              onTap: () {
-                // Editar os dados do usuário logado
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EditUserScreen(user: currentUser),
-                  ),
-                );
-              },
-            );
-          }
-
-          // Exibe os outros usuários abaixo
           return ListTile(
             title: Text(currentUser.nome),
             subtitle: Column(
@@ -75,6 +53,35 @@ class HomeScreen extends StatelessWidget {
                 Text('Frase: ${getRandomPhrase()}'),
               ],
             ),
+            onTap: () {
+              // Se o usuário tentar editar outro usuário, exibe um alerta
+              if (currentUser.id == user.id) {
+                // Se for o próprio usuário, navega para a tela de edição
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditUserScreen(user: currentUser),
+                  ),
+                );
+              } else {
+                // Caso contrário, exibe um alerta informando que não pode editar
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Atenção'),
+                    content: const Text('Você não pode editar esse usuário.'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(); // Fecha o alerta
+                        },
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ),
+                );
+              }
+            },
           );
         },
       ),

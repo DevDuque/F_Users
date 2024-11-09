@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../controller/UserProvider.dart';
+
 import '../model/UserModel.dart';
+import '../controller/UserProvider.dart';
+
 import '../theme/colors.dart';
 
 class EditUserScreen extends StatelessWidget {

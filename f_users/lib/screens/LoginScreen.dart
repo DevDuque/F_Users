@@ -105,7 +105,8 @@ class LoginScreen extends StatelessWidget {
                   final user =
                       userProvider.findUserByEmail(emailController.text);
 
-                  if (user != null && user.senha == senhaController.text) {
+                  if (user.email.isNotEmpty &&
+                      user.senha == senhaController.text) {
                     // Login bem-sucedido, navegar para a HomeScreen
                     Navigator.pushReplacement(
                       context,
