@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../theme/colors.dart';
-import './LoginScreen.dart';
+import 'package:provider/provider.dart';
+
 import '../controller/UserProvider.dart';
+
+import './LoginScreen.dart';
+import '../theme/colors.dart';
 import '../model/UserModel.dart';
 
 class SignScreen extends StatelessWidget {
@@ -80,6 +82,8 @@ class SignScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   TextField(
                     controller: emailController,
+                    keyboardType:
+                        TextInputType.emailAddress, // Definindo tipo email
                     style: TextStyle(color: AppColors.textColor),
                     decoration: InputDecoration(
                       filled: true,
@@ -111,6 +115,8 @@ class SignScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   TextField(
                     controller: telefoneController,
+                    keyboardType:
+                        TextInputType.phone, // Definindo tipo telefone
                     style: TextStyle(color: AppColors.textColor),
                     decoration: InputDecoration(
                       filled: true,
@@ -162,27 +168,78 @@ class SignScreen extends StatelessWidget {
 
               // Botão de Cadastro
               ElevatedButton(
-                onPressed: () {
-                  // Criação do usuário com UUID gerado automaticamente
-                  final user = UserModel(
-                    id: UserModel.generateUUID(), // Gerando o UUID
-                    nome: nomeController.text,
-                    email: emailController.text,
-                    telefone: telefoneController.text,
-                    senha: senhaController.text,
-                  );
+                onPressed: () async {
+                  // Verificar se algum campo está vazio
+                  if (nomeController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Nome não pode ser vazio!')),
+                    );
+                    return;
+                  }
 
-                  // Chama o método de adicionar usuário do Provider
-                  Provider.of<UserProvider>(context, listen: false)
-                      .addUser(user)
-                      .then((_) {
-                    // Mostra um Snackbar ou navega para outra tela
+                  if (emailController.text.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Usuário cadastrado!')));
-                  }).catchError((error) {
+                      const SnackBar(
+                          content: Text('Email não pode ser vazio!')),
+                    );
+                    return;
+                  }
+
+                  if (telefoneController.text.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Erro ao cadastrar usuário!')));
-                  });
+                      const SnackBar(
+                          content: Text('Telefone não pode ser vazio!')),
+                    );
+                    return;
+                  }
+
+                  if (senhaController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text('Senha não pode ser vazia!')),
+                    );
+                    return;
+                  }
+
+                  // Validar telefone (simples checagem de número)
+                  final telefone = telefoneController.text.replaceAll(
+                      RegExp(r'\D'),
+                      ''); // Remover qualquer coisa que não seja número
+                  if (telefone.length < 10 || telefone.length > 11) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Telefone inválido!')),
+                    );
+                    return;
+                  }
+
+                  try {
+                    // Criação do usuário com UUID gerado automaticamente
+                    final user = UserModel(
+                      id: UserModel.generateUUID(), // Gerando o UUID
+                      nome: nomeController.text,
+                      email: emailController.text,
+                      telefone: telefoneController.text,
+                      senha: senhaController.text,
+                    );
+
+                    // Chama o método de adicionar usuário do Provider
+                    await Provider.of<UserProvider>(context, listen: false)
+                        .addUser(user);
+
+                    // Mostra um Snackbar para o usuário
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Usuário cadastrado!')),
+                    );
+                  } catch (error) {
+                    // Logando o erro no console para depuração
+                    print('Erro ao cadastrar usuário: $error');
+
+                    // Exibe o Snackbar com o erro
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text('Erro ao cadastrar usuário!')),
+                    );
+                  }
                 },
                 child: const Text('Cadastrar'),
               ),

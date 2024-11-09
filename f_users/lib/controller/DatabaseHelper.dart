@@ -1,7 +1,11 @@
-import 'package:sqflite/sqflite.dart';
+import 'package:flutter/foundation.dart';
+
 import 'package:path/path.dart';
-import 'package:uuid/uuid.dart';
+
 import '../model/UserModel.dart';
+
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
 class DatabaseHelper {
   static Database? _database;
@@ -9,6 +13,15 @@ class DatabaseHelper {
   // Cria ou abre o banco de dados
   static Future<Database> get database async {
     if (_database != null) return _database!;
+
+    if (kIsWeb) {
+      // Para web, inicializa o sqflite_common_ffi_web
+      databaseFactory = databaseFactoryFfiWeb;
+    } else {
+      // Para outras plataformas, continua com a inicialização tradicional
+      databaseFactory = databaseFactoryFfi;
+    }
+
     _database = await _initDatabase();
     return _database!;
   }
@@ -27,26 +40,13 @@ class DatabaseHelper {
     );
   }
 
-  // Insere um novo usuário no banco de dados
+  // Função de inserção do usuário
   static Future<void> insertUser(UserModel user) async {
     final db = await database;
-
-    // Verifica se o id já foi gerado no modelo, senão, cria um novo UUID
-    final userWithId = UserModel(
-      id: user.id.isEmpty
-          ? UserModel.generateUUID()
-          : user.id, // Garante que o ID é gerado
-      nome: user.nome,
-      email: user.email,
-      telefone: user.telefone,
-      senha: user.senha,
-    );
-
     await db.insert(
       'users',
-      userWithId.toMap(),
-      conflictAlgorithm:
-          ConflictAlgorithm.replace, // Substitui no caso de conflito
+      user.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
