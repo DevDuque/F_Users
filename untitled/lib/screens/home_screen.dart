@@ -19,6 +19,13 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
 
+    // Organizar os usuários colocando o usuário logado em primeiro lugar
+    final sortedUsers = [
+      user, // Adiciona o usuário logado primeiro
+      ...userProvider.users
+          .where((u) => u.id != user.id) // Adiciona os demais usuários
+    ];
+
     // Array de frases aleatórias
     final List<String> phrases = [
       'A vida é uma jornada, aproveite cada momento.',
@@ -42,65 +49,92 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-          title: Text('Usuários Registrados',
-              style: Theme.of(context).appBarTheme.titleTextStyle),
-          backgroundColor: AppColors.backgroundColor,
-          iconTheme: IconThemeData(color: AppColors.textColor),
-          automaticallyImplyLeading: true),
+        title: Text(
+          'Usuários Registrados',
+          style: Theme.of(context).appBarTheme.titleTextStyle,
+        ),
+        backgroundColor: AppColors.backgroundColor,
+        iconTheme: IconThemeData(color: AppColors.textColor),
+        automaticallyImplyLeading: true,
+      ),
       body: ListView.builder(
-        itemCount: userProvider.users.length,
+        itemCount: sortedUsers.length,
         itemBuilder: (context, index) {
-          final currentUser = userProvider.users[index];
+          final currentUser = sortedUsers[index];
 
-          return ListTile(
-            title: Text(currentUser.nome,
-                style: Theme.of(context).textTheme.titleLarge),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 8),
-                Text(
-                  'Telefone: ${currentUser.telefone}',
-                  style: Theme.of(context).textTheme.labelMedium,
+          return Column(
+            children: [
+              ListTile(
+                title: Text(
+                  currentUser.nome,
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  'Email: ${currentUser.email}',
-                  style: Theme.of(context).textTheme.labelMedium,
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 8),
+                    Text(
+                      'Telefone: ${currentUser.telefone}',
+                      style: Theme.of(context).textTheme.labelMedium,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Email: ${currentUser.email}',
+                      style: Theme.of(context).textTheme.labelMedium,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Frase: ${getRandomPhrase()}',
+                      style: Theme.of(context).textTheme.labelMedium,
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  'Frase: ${getRandomPhrase()}',
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-              ],
-            ),
-            onTap: () {
-              if (currentUser.id == user.id) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EditUserScreen(user: currentUser),
-                  ),
-                );
-              } else {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('Atenção'),
-                    content: const Text('Você não pode editar esse usuário.'),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop(); // Fecha o alerta
-                        },
-                        child: const Text('OK'),
+                onTap: () {
+                  if (currentUser.id == user.id) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditUserScreen(user: currentUser),
                       ),
-                    ],
+                    );
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Atenção'),
+                        content:
+                            const Text('Você não pode editar esse usuário.'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(); // Fecha o alerta
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                },
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width *
+                        0.4, // 40% à esquerda
                   ),
-                );
-              }
-            },
+                  Expanded(
+                    flex: 3,
+                    child: Divider(
+                      color: AppColors.secondaryColor,
+                      thickness: 2,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                ],
+              ),
+            ],
           );
         },
       ),

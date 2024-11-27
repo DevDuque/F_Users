@@ -22,51 +22,46 @@ class EditUserScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           color: AppColors.textColor,
-
           onPressed: () => Navigator.pop(context),
         ),
-
-        title: Text('Editar Usuário', style: Theme.of(context).appBarTheme.titleTextStyle),
+        title: Text('Editar Usuário',
+            style: Theme.of(context).appBarTheme.titleTextStyle),
         backgroundColor: AppColors.backgroundColor,
-
         actions: [
-
           IconButton(
             icon: const Icon(Icons.delete),
             color: AppColors.primaryColor,
-
             onPressed: () async {
               // Exibir um diálogo de confirmação antes de deletar o usuário
               final shouldDelete = await showDialog<bool>(
-
-                context: context,
-                builder: (BuildContext context) {
-
-                  return AlertDialog(
-
-                    title: const Text('Confirmar Exclusão'),
-                    content: const Text('Tem certeza que deseja excluir este usuário?'),
-
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(false),
-                        child: Text('Cancelar', style: Theme.of(context).textTheme.displayMedium),
-                      ),
-
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(true),
-                        child: Text('Excluir', style: Theme.of(context).textTheme.titleMedium),
-                      ),
-
-                    ],
-                  );
-                },
-              ) ??
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Confirmar Exclusão'),
+                        content: const Text(
+                            'Tem certeza que deseja excluir este usuário?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(false),
+                            child: Text('Cancelar',
+                                style:
+                                    Theme.of(context).textTheme.displayMedium),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(true),
+                            child: Text('Excluir',
+                                style: Theme.of(context).textTheme.titleMedium),
+                          ),
+                        ],
+                      );
+                    },
+                  ) ??
                   false;
 
               if (shouldDelete) {
                 // Deletar usuário
-                Provider.of<UserProvider>(context, listen: false).deleteUser(user);
+                Provider.of<UserProvider>(context, listen: false)
+                    .deleteUser(user);
 
                 // Voltar à tela anterior após deletar
                 Navigator.pop(context);
@@ -84,15 +79,12 @@ class EditUserScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Nome', style: Theme.of(context).textTheme.labelMedium),
-
                 const SizedBox(height: 16),
-
                 TextField(
                   controller: nomeController,
-
                   style: const TextStyle(color: AppColors.textColor),
-
-                  decoration: const InputDecoration(hintText: 'Digite seu nome'),
+                  decoration:
+                      const InputDecoration(hintText: 'Digite seu nome'),
                 ),
               ],
             ),
@@ -103,18 +95,14 @@ class EditUserScreen extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 Text('Email', style: Theme.of(context).textTheme.labelMedium),
-
                 const SizedBox(height: 16),
-
                 TextField(
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
-
                   style: const TextStyle(color: AppColors.textColor),
-
-                  decoration: const InputDecoration(hintText: 'Digite seu email'),
+                  decoration:
+                      const InputDecoration(hintText: 'Digite seu email'),
                 ),
               ],
             ),
@@ -125,22 +113,20 @@ class EditUserScreen extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Telefone', style: Theme.of(context).textTheme.labelMedium),
-
+                Text('Telefone',
+                    style: Theme.of(context).textTheme.labelMedium),
                 const SizedBox(height: 16),
-
                 TextField(
                   controller: telefoneController,
                   keyboardType: TextInputType.phone,
-
                   style: const TextStyle(color: AppColors.textColor),
-
-                  decoration: const InputDecoration(hintText: 'Digite seu telefone'),
+                  decoration:
+                      const InputDecoration(hintText: 'Digite seu telefone'),
                 ),
               ],
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 24),
 
             // Botão para salvar as alterações
             ElevatedButton(
@@ -158,18 +144,15 @@ class EditUserScreen extends StatelessWidget {
                 // Voltar para a tela anterior
                 Navigator.pop(context);
               },
-
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.secondaryColor,
-
-                minimumSize: const Size(double.infinity, 50),
-
+                minimumSize: const Size(double.infinity, 64),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
               ),
-
-              child: Text('Salvar', style: Theme.of(context).textTheme.displayMedium),
+              child: Text('Salvar',
+                  style: Theme.of(context).textTheme.displayMedium),
             ),
           ],
         ),

@@ -81,7 +81,6 @@ class LoginScreen extends StatelessWidget {
                   if (user != null &&
                       user.email.isNotEmpty &&
                       user.senha == senhaController.text) {
-                    // Login successful, navigate to HomeScreen (using push, not pushReplacement)
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -89,7 +88,6 @@ class LoginScreen extends StatelessWidget {
                       ),
                     );
                   } else {
-                    // Display an error if login fails
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                           content: Text('Email ou senha incorretos')),
@@ -98,7 +96,7 @@ class LoginScreen extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.secondaryColor,
-                  minimumSize: const Size(double.infinity, 50),
+                  minimumSize: const Size(double.infinity, 64),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
