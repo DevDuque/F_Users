@@ -63,7 +63,7 @@ class SignScreen extends StatelessWidget {
                   TextField(
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
-                    style: const TextStyle(color: AppColors.textColor),
+                    style: Theme.of(context).textTheme.labelMedium,
                     decoration:
                         const InputDecoration(hintText: 'Digite seu email'),
                   ),
@@ -82,7 +82,7 @@ class SignScreen extends StatelessWidget {
                   TextField(
                     controller: telefoneController,
                     keyboardType: TextInputType.phone,
-                    style: const TextStyle(color: AppColors.textColor),
+                    style: Theme.of(context).textTheme.labelMedium,
                     decoration:
                         const InputDecoration(hintText: 'Digite seu telefone'),
                   ),
@@ -100,7 +100,8 @@ class SignScreen extends StatelessWidget {
                   TextField(
                     obscureText: true,
                     controller: senhaController,
-                    style: const TextStyle(color: AppColors.textColor),
+                    keyboardType: TextInputType.number,
+                    style: Theme.of(context).textTheme.labelMedium,
                     decoration:
                         const InputDecoration(hintText: 'Digite seu senha'),
                   ),
