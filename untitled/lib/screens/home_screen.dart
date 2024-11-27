@@ -45,6 +45,7 @@ class HomeScreen extends StatelessWidget {
           title: Text('Usuários Registrados',
               style: Theme.of(context).appBarTheme.titleTextStyle),
           backgroundColor: AppColors.backgroundColor,
+          iconTheme: IconThemeData(color: AppColors.textColor),
           automaticallyImplyLeading: true),
       body: ListView.builder(
         itemCount: userProvider.users.length,
