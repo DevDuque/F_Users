@@ -28,7 +28,6 @@ class SignScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
               // Logo SVG
               SvgPicture.asset(
                 'lib/assets/images/logo.svg',
@@ -43,15 +42,12 @@ class SignScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Nome', style: Theme.of(context).textTheme.labelMedium),
-
                   const SizedBox(height: 16),
-
                   TextField(
                     controller: nomeController,
-
                     style: const TextStyle(color: AppColors.textColor),
-
-                    decoration: const InputDecoration(hintText: 'Digite seu nome'),
+                    decoration:
+                        const InputDecoration(hintText: 'Digite seu nome'),
                   ),
                 ],
               ),
@@ -62,18 +58,14 @@ class SignScreen extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   Text('Email', style: Theme.of(context).textTheme.labelMedium),
-
                   const SizedBox(height: 16),
-
                   TextField(
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
-
                     style: const TextStyle(color: AppColors.textColor),
-
-                    decoration: const InputDecoration(hintText: 'Digite seu email'),
+                    decoration:
+                        const InputDecoration(hintText: 'Digite seu email'),
                   ),
                 ],
               ),
@@ -84,17 +76,15 @@ class SignScreen extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Telefone', style: Theme.of(context).textTheme.labelMedium),
-
+                  Text('Telefone',
+                      style: Theme.of(context).textTheme.labelMedium),
                   const SizedBox(height: 16),
-
                   TextField(
                     controller: telefoneController,
                     keyboardType: TextInputType.phone,
-
                     style: const TextStyle(color: AppColors.textColor),
-
-                    decoration: const InputDecoration(hintText: 'Digite seu telefone'),
+                    decoration:
+                        const InputDecoration(hintText: 'Digite seu telefone'),
                   ),
                 ],
               ),
@@ -105,18 +95,14 @@ class SignScreen extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   Text('Senha', style: Theme.of(context).textTheme.labelMedium),
-
                   const SizedBox(height: 16),
-
                   TextField(
                     obscureText: true,
                     controller: senhaController,
-
                     style: const TextStyle(color: AppColors.textColor),
-
-                    decoration: const InputDecoration(hintText: 'Digite seu senha'),
+                    decoration:
+                        const InputDecoration(hintText: 'Digite seu senha'),
                   ),
                 ],
               ),
@@ -125,12 +111,13 @@ class SignScreen extends StatelessWidget {
 
               ElevatedButton(
                 onPressed: () async {
-
-                  if (nomeController.text.isEmpty || emailController.text.isEmpty ||
-                      telefoneController.text.isEmpty || senhaController.text.isEmpty) {
-
+                  if (nomeController.text.isEmpty ||
+                      emailController.text.isEmpty ||
+                      telefoneController.text.isEmpty ||
+                      senhaController.text.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Preencha todos os campos!')),
+                      const SnackBar(
+                          content: Text('Preencha todos os campos!')),
                     );
                     return;
                   }
@@ -145,10 +132,12 @@ class SignScreen extends StatelessWidget {
                     );
 
                     // Adiciona o usuário ao provider
-                    Provider.of<UserProvider>(context, listen: false).addUser(user);
+                    Provider.of<UserProvider>(context, listen: false)
+                        .addUser(user);
 
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Usuário cadastrado com sucesso!')),
+                      const SnackBar(
+                          content: Text('Usuário cadastrado com sucesso!')),
                     );
 
                     // Volta para a tela de login após o cadastro
@@ -164,17 +153,14 @@ class SignScreen extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.secondaryColor,
-
                   minimumSize: const Size(double.infinity, 50),
-
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
                 ),
-
-                child: Text('Entrar', style: Theme.of(context).textTheme.displayMedium),
+                child: Text('Cadastrar',
+                    style: Theme.of(context).textTheme.displayMedium),
               ),
-
 
               const SizedBox(height: 20),
 
@@ -196,7 +182,7 @@ class SignScreen extends StatelessWidget {
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => const LoginScreen()),
@@ -211,7 +197,5 @@ class SignScreen extends StatelessWidget {
         ),
       ),
     );
-
-
   }
 }

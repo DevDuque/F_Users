@@ -26,7 +26,6 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
               // Logo SVG
               SvgPicture.asset(
                 'lib/assets/images/logo.svg',
@@ -41,15 +40,12 @@ class LoginScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Email', style: Theme.of(context).textTheme.labelMedium),
-
                   const SizedBox(height: 16),
-
                   TextField(
                     controller: emailController,
-
                     style: const TextStyle(color: AppColors.textColor),
-
-                    decoration: const InputDecoration(hintText: 'Digite seu email'),
+                    decoration:
+                        const InputDecoration(hintText: 'Digite seu email'),
                   ),
                 ],
               ),
@@ -61,16 +57,13 @@ class LoginScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Senha', style: Theme.of(context).textTheme.labelMedium),
-
                   const SizedBox(height: 16),
-
                   TextField(
                     obscureText: true,
                     controller: senhaController,
-
                     style: const TextStyle(color: AppColors.textColor),
-
-                    decoration: const InputDecoration(hintText: 'Digite seu senha'),
+                    decoration:
+                        const InputDecoration(hintText: 'Digite seu senha'),
                   ),
                 ],
               ),
@@ -78,45 +71,39 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 40),
 
               ElevatedButton(
-
                 onPressed: () {
-                  final userProvider = Provider.of<UserProvider>(context, listen: false);
+                  final userProvider =
+                      Provider.of<UserProvider>(context, listen: false);
+                  final user =
+                      userProvider.findUserByEmail(emailController.text);
 
-                  final user = userProvider.findUserByEmail(emailController.text);
-
-                  // Verifique se o usuário existe (não é nulo)
                   if (user != null &&
                       user.email.isNotEmpty &&
                       user.senha == senhaController.text) {
-
-                    // Login bem-sucedido, navegar para a HomeScreen
-                    Navigator.pushReplacement(
+                    // Login successful, navigate to HomeScreen (using push, not pushReplacement)
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            HomeScreen(user: user),
+                        builder: (context) => HomeScreen(user: user),
                       ),
                     );
                   } else {
-                    // Exibir um erro, se o login falhar
+                    // Display an error if login fails
                     ScaffoldMessenger.of(context).showSnackBar(
-
                       const SnackBar(
                           content: Text('Email ou senha incorretos')),
                     );
                   }
                 },
                 style: ElevatedButton.styleFrom(
-
                   backgroundColor: AppColors.secondaryColor,
-
                   minimumSize: const Size(double.infinity, 50),
-
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: Text('Entrar', style: Theme.of(context).textTheme.displayMedium),
+                child: Text('Entrar',
+                    style: Theme.of(context).textTheme.displayMedium),
               ),
 
               const SizedBox(height: 20),
