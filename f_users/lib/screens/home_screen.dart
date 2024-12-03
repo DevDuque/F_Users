@@ -21,6 +21,15 @@ class HomeScreen extends StatelessWidget {
 
     return Consumer<UserProvider>(
       builder: (context, userProvider, child) {
+        // Ordena a lista para colocar o usuário logado no começo
+        List<UserModel> users = List.from(userProvider.users);
+        users.sort((a, b) {
+          // Compara se o usuário é o logado
+          if (a.id == user.id) return -1;
+          if (b.id == user.id) return 1;
+          return 0;
+        });
+
         return Scaffold(
           appBar: AppBar(
             title: Text(
