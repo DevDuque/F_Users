@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import 'package:path/path.dart';
 
-import '../model/UserModel.dart';
+import '../model/user_model.dart';
 
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
@@ -94,5 +94,11 @@ class DatabaseHelper {
       where: 'id = ?',
       whereArgs: [userId],
     );
+  }
+
+  // Função para deletar todos os usuários do banco de dados
+  static Future<void> deleteAllUsers() async {
+    final db = await database;
+    await db.delete('users'); // Deleta todos os registros da tabela 'users'
   }
 }

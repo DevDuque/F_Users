@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import '../controller/DatabaseHelper.dart';
-import '../model/UserModel.dart';
+import 'database_helper.dart';
+import '../model/user_model.dart';
 
 class UserProvider with ChangeNotifier {
   List<UserModel> _users = [];
 
   List<UserModel> get users => _users;
 
-  // Carrega todos os usuários do banco de dados
+  // Função para carregar os usuários diretamente do banco de dados
   Future<void> fetchUsers() async {
     _users = await DatabaseHelper.getUsers();
     notifyListeners();
   }
 
-  // Adiciona um novo usuário ao banco de dados e atualiza a lista
+  // Função para adicionar um novo usuário ao banco de dados
   Future<void> addUser(UserModel user) async {
     final userWithId = UserModel(
       id: UserModel.generateUUID(),
@@ -28,25 +28,19 @@ class UserProvider with ChangeNotifier {
   }
 
   // Função para encontrar um usuário pelo email
-  UserModel findUserByEmail(String email) {
-    try {
-      return _users.firstWhere(
-        (user) => user.email == email,
-      );
-    } catch (e) {
-      throw Exception("Usuário não encontrado");
-    }
+  Future<UserModel?> findUserByEmail(String email) async {
+    return await DatabaseHelper.getUserByEmail(email);
   }
 
   // Função para atualizar um usuário
   Future<void> updateUser(UserModel updatedUser) async {
     await DatabaseHelper.updateUser(updatedUser);
-    await fetchUsers(); // Atualiza a lista de usuários após a edição
+    await fetchUsers();
   }
 
   // Função para deletar um usuário
   Future<void> deleteUser(UserModel user) async {
-    await DatabaseHelper.deleteUser(user.id); // Remover do banco de dados
-    await fetchUsers(); // Atualiza a lista de usuários após a exclusão
+    await DatabaseHelper.deleteUser(user.id);
+    await fetchUsers();
   }
 }
